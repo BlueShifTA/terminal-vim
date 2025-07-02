@@ -128,4 +128,22 @@ else
   echo "⚠️  No encrypted SSH keys found."
 fi
 
+echo "🔧 Configuring Git..."
+
+# Automatically set upstream on first push
+git config --global push.autoSetupRemote true
+
+# Use rebase by default when pulling
+git config --global pull.rebase true
+
+# Automatically stash local changes before rebasing
+git config --global rebase.autoStash true
+
+echo "✅ Git is now configured with:"
+echo "  • push.autoSetupRemote = true"
+echo "  • pull.rebase = true"
+echo "  • rebase.autoStash = true"
+
+
+
 echo "✅ Installation complete. Please restart your terminal."
