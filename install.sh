@@ -2,7 +2,7 @@
 
 set -e
 
-DOTFILES_DIR=~/dotfiles
+DOTFILES_DIR=~/Project/terminal_editor_settings
 
 echo "🔧 Setting up your terminal environment from $DOTFILES_DIR"
 
@@ -27,6 +27,7 @@ brew install \
   python@3.10 \
   just \
   gdb \
+  gnupg \
   ripgrep \
   lazygit \
   pyright \
