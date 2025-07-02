@@ -15,13 +15,15 @@ if ! command -v brew &>/dev/null; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+export PATH="/opt/homebrew/bin:$PATH"
+
 # -------------------------------
 # 📦 Essential tools
 # -------------------------------
 echo "📦 Installing terminal tools..."
 brew install \
   zsh \
-  macvim \
+  vim \
   neovim \
   node \
   python@3.10 \
@@ -30,8 +32,9 @@ brew install \
   gnupg \
   ripgrep \
   lazygit \
-  pyright \
-  iterm2
+  pyright
+
+brew install --cask iterm2
 
 # -------------------------------
 # 🌀 Oh My Zsh
@@ -46,14 +49,14 @@ fi
 # -------------------------------
 echo "🔗 Copying Zsh config..."
 cp "$DOTFILES_DIR/.zshrc" ~/
-cp -r "$DOTFILES_DIR/.oh-my-zsh" ~/
+cp -r "$DOTFILES_DIR/.oh-my-zsh" ~/ 2>/dev/null || true
 
 echo "🔁 Setting Zsh as default shell..."
 chsh -s /bin/zsh
 
 echo "🔗 Copying Vim config..."
 cp "$DOTFILES_DIR/.vimrc" ~/
-cp -r "$DOTFILES_DIR/.vim" ~/
+cp -r "$DOTFILES_DIR/.vim" ~/ 2>/dev/null || true
 
 if [ -d "$DOTFILES_DIR/.config/nvim" ]; then
   echo "🔗 Copying Neovim config..."
@@ -114,12 +117,15 @@ if [ -f "$SSH_BACKUP" ]; then
   mkdir -p "$SSH_DIR"
   gpg --quiet --decrypt "$SSH_BACKUP" | tar -xz -C "$SSH_DIR"
 
-  chmod 700 "$SSH_DIR"
-  chmod 600 "$SSH_DIR"/github "$SSH_DIR"/gitlab "$SSH_DIR"/gitlab_molo 2>/dev/null || true
-  chmod 644 "$SSH_DIR"/*.pub 2>/dev/null || true
+  echo "🔐 Fixing SSH permissions..."
+  chmod 700 ~/.ssh
+  chown "$USER:staff" ~/.ssh
+  chmod 400 ~/.ssh/git* 2>/dev/null || true
+  chmod 644 ~/.ssh/config 2>/dev/null || true
+
   echo "✅ SSH keys restored to ~/.ssh"
 else
   echo "⚠️  No encrypted SSH keys found."
 fi
 
-echo "✅ Installation complete. Restart your terminal."
+echo "✅ Installation complete. Please restart your terminal."
