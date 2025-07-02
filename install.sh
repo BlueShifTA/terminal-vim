@@ -73,16 +73,6 @@ echo "📥 Installing Vim plugins..."
 vim +'PlugInstall --sync' +qa
 
 # -------------------------------
-# 🐍 Python virtualenv
-# -------------------------------
-echo "🐍 Setting up Python virtualenv..."
-VENV_DIR=~/lino_Software/mono/.venv
-mkdir -p "$(dirname "$VENV_DIR")"
-python3.10 -m venv "$VENV_DIR"
-source "$VENV_DIR/bin/activate"
-pip install pynvim black pycln pyright
-
-# -------------------------------
 # 🌍 Node tools
 # -------------------------------
 echo "🌍 Installing global Node tools..."
