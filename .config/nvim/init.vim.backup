@@ -211,10 +211,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'zbirenbaum/copilot.lua'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
-Plug 'madox2/vim-ai'
+Plug 'rebelot/kanagawa.nvim'
+Plug 'zbirenbaum/copilot.lua'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
 call plug#end()
-
-
 
 
 """""""""""
@@ -231,12 +232,6 @@ let g:ale_fix_on_save = 1
 let g:ale_completion_autoimport = 1
 let g:asyncomplete_sources = ['ale']
 let g:asyncomplete_auto_popup = 1
-let g:python3_host_prog = '/Users/sekin/lino_Software/mono/.venv/bin/python'
-let g:ale_python_pyright_executable = 'pyright-langserver'
-let g:ale_python_pyright_use_global = 1
-" let g:ale_python_pyright_config = '/Users/sekin/lino_Software/mono/projects/pyrightconfig.json'
-let g:ale_python_pyright_use_project_root = 1
-let g:ale_linters = {'python': ['pyright']}
 " set omnifunc=ale#completion#OmniFunc
 inoremap <expr> <ENTER> pumvisible() ? "\<C-y>" : "\<CR>"
 
@@ -251,7 +246,7 @@ nmap <leader>ca  <Plug>(coc-codeaction-selected)
 nnoremap <leader>jd :ALEGoToDefinition<CR>
 nnoremap <leader>en :ALEEnable<CR>
 nnoremap <leader>di :ALEDisable<CR>
-
+let g:ale_linters = {'python': ['pyright']}
 
 "
 " Open NERDTree 
@@ -261,6 +256,18 @@ autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
       \ && b:NERDTree.isTabTree()) | q | endif
 
+" Enable syntax highlighting 
+syntax enable
+" Enable 256 colors palette 
+set t_Co=256
+" Important!! 
+if has('termguicolors') 
+    set termguicolors 
+endif
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+highlight Normal guibg=NONE guifg=NONE ctermbg=NONE ctermfg=NONE
 
 " Vim Spector
 let g:vimspector_enable_mappings = 'HUMAN'
@@ -279,10 +286,6 @@ nmap <Leader>dh <Plug>VimspectorStepOut
 nmap <Leader>dl <Plug>VimspectorStepInto
 nmap <Leader>dj <Plug>VimspectorStepOver
 
-
-
-" Vim AI
-let g:openai_model = "gpt-4o-mini"
 
 
 

@@ -56,7 +56,7 @@ fi
 SSH_BACKUP="$DOTFILES_DIR/ssh_keys.tar.gz.gpg"
 
 echo "🔐 Archiving and encrypting SSH keys..."
-tar -czf ssh_keys.tar.gz -C ~/.ssh  2>/dev/null || true
+tar -czf ssh_keys.tar.gz -C ~/.ssh config github github.pub gitlab gitlab.pub gitlab_molo gitlab_molo.pub 2>/dev/null || true
 gpg --batch --yes --symmetric --cipher-algo AES256 ssh_keys.tar.gz
 mv ssh_keys.tar.gz.gpg "$SSH_BACKUP"
 rm -f ssh_keys.tar.gz

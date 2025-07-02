@@ -1,0 +1,290 @@
+-- vim.opt.clipboard = "unnamedplus"
+vim.opt.mouse = "a"  -- Enable mouse support in all modes
+vim.opt.clipboard = "unnamedplus"  -- Sync Neovim with system clipboard
+vim.g.python3_host_prog = "$HOME/lino_Software/mono/.venv/bin/python3"
+vim.opt.shell = "/bin/zsh"  -- Use Zsh (or change to your preferred shell)
+vim.opt.shellcmdflag = "-c"  -- Ensure commands are executed properly
+
+-- Set leader key
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
+-- Install lazy.nvim if missing
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git", "clone", "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+-- Load plugins
+require("lazy").setup({
+  -- File Explorer
+  { "preservim/nerdtree" },
+
+  -- AI Assistance
+  { "github/copilot.vim" },
+
+  -- LSP, Code Navigation, Completion
+  { "neovim/nvim-lspconfig" },
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+
+  -- Real-time linting
+  { "dense-analysis/ale" },
+
+  -- Debugging
+  { "mfussenegger/nvim-dap" },
+
+  -- Search Plugin
+  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+
+  -- Optional: VimPet (project management)
+  { "tpope/vim-projectionist" },
+
+  -- Optional: Monokai Theme
+  { "tanvirtin/monokai.nvim" },
+
+})
+
+-- Monokai Theme
+require('monokai').setup{}
+vim.opt.termguicolors = true
+vim.cmd("highlight Comment guifg=#93a1a1")
+vim.opt.guifont = "Monaco:h18"
+vim.opt.background = "dark"
+
+-- Manually force a dark background
+-- vim.cmd("highlight Normal guibg=#000000 guifg=#5CFB75")  -- Dark background with green text
+-- vim.cmd("highlight NonText guibg=#000000")  -- Hide non-text areas
+vim.cmd("highlight CursorLine guibg=#002b36")  -- Dim cursor line
+vim.cmd("highlight Cursor guifg=NONE guibg=#333333")  -- Dark gray cursor
+vim.cmd("highlight iCursor guifg=NONE guibg=#444444")  -- Slightly lighter in insert mode
+
+
+vim.cmd("highlight Normal guibg=NONE ctermbg=NONE guifg=#5CFB75")  -- Transparent main background
+vim.cmd("highlight NonText guibg=NONE")  -- Transparent empty lines
+vim.cmd("highlight LineNr guibg=FFFB0B")  -- Transparent line numbers
+vim.cmd("highlight VertSplit guibg=NONE guifg=#00FF00")  -- Keep split lines visible
+
+vim.cmd("highlight Function guifg=#78F8FE")  -- Light blue for class names
+vim.cmd("highlight Statement guifg=#FCFA6A")  -- yellew for keywords
+vim.cmd("highlight Repeat guifg=#FCFA6A")  -- yellew for for-loop
+vim.cmd("highlight Operator guifg=#FCFA6A")  -- yellew for operator
+vim.cmd("highlight Conditional guifg=#FCFA6A")  -- yellew for conditional
+vim.cmd("highlight Define guifg=#78F8FE")  -- lightblue for define
+vim.cmd("highlight String guifg=#E36CED")  -- magenta for string
+vim.cmd("highlight Comment guifg=#78F8FE")  -- magenta for string
+vim.cmd("highlight Number guifg=#E36CED")  -- magenta for string
+
+
+
+vim.api.nvim_set_keymap("n", "<Left>", "col('.') == 1 ? 'gk$' : '<Left>'", { noremap = true, expr = true })
+vim.api.nvim_set_keymap("n", "<Right>", "col('.') >= col('$') - 1 ? 'gj0' : '<Right>'", { noremap = true, expr = true })
+
+vim.opt.guicursor = "n-v-c:block-Cursor"  -- Block cursor in normal/visual/command mode
+vim.opt.guicursor = vim.opt.guicursor + "i:ver25-iCursor"  -- Vertical cursor in insert mode
+
+vim.opt.laststatus = 2  -- Always show the status line
+
+
+
+-- Copilot Configuration
+vim.api.nvim_set_keymap("i", "<C-Space>", 'copilot#Accept("")', { expr = true, silent = true, noremap = true })
+
+
+-- Custom status line with filename
+vim.opt.statusline = "%#Title# %f %m %= %y %r %p%% %l:%c"
+
+-- NERDTree Configuration
+vim.g.NERDTreeShowHidden = 1
+vim.g.NERDTreeWinSize = 30
+vim.g.NERDTreeQuitOnOpen = 1
+vim.g.NERDTreeOpenOnConsole = 1
+vim.api.nvim_create_autocmd("VimEnter", {
+  command = "NERDTree | wincmd p"
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  command = [[if winnr("$") == 1 && exists("b:NERDTree") | quit | endif]]
+})
+
+-- Make NERDTree have a distinct background
+vim.cmd("highlight NERDTreeNormal guibg=#002b36 guifg=#FFFF00")
+vim.cmd("highlight VertSplit guifg=#00FF00 guibg=#000000")  -- Green vertical split
+vim.opt.fillchars = { vert = '│' }  -- Thin vertical line
+
+
+-- Basic Settings
+vim.opt.history = 700
+vim.opt.number = true
+vim.opt.cmdheight = 2
+vim.opt.cursorline = true
+vim.opt.wildmenu = true
+vim.opt.autoread = true
+
+-- Tabs and Indentation
+vim.opt.expandtab = true
+vim.opt.smarttab = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+vim.opt.wrap = false
+
+-- Searching
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+vim.opt.smartcase = true
+
+-- Key Mappings
+vim.api.nvim_set_keymap("n", "<leader>w", ":w!<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>q", ":q<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>wq", ":wq!<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>nt", ":NERDTreeToggle<CR>", { noremap = true })
+
+-- Split Navigation
+vim.api.nvim_set_keymap("n", "<C-h>", "<C-w>h", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-j>", "<C-w>j", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-k>", "<C-w>k", { noremap = true })
+vim.api.nvim_set_keymap("n", "<C-l>", "<C-w>l", { noremap = true })
+
+-- Utility Functions
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    local last_pos = vim.fn.line("'\"")
+    if last_pos > 1 and last_pos <= vim.fn.line("$") then
+      vim.api.nvim_win_set_cursor(0, { last_pos, 0 })
+    end
+  end
+})
+
+
+vim.api.nvim_create_autocmd("WinNew", {
+  pattern = "*",
+  callback = function()
+    vim.defer_fn(function()
+      vim.cmd("wincmd p") -- Move to the last accessed window
+    end, 10) -- Slight delay to ensure window opens before moving
+  end
+})
+
+-- Code Navigation (Jump to Definition)
+vim.api.nvim_set_keymap("n", "<leader>jd", "<cmd>lua vim.lsp.buf.definition()<CR>", { noremap = true, silent = true })
+
+-- LSP Configuration
+local lspconfig = require('lspconfig')
+lspconfig.pyright.setup({
+  root_dir = function(fname)
+    return require("lspconfig.util").find_git_ancestor(fname) or vim.fn.expand("~/lino_Software/mono/projects")
+  end,
+  settings = {
+    python = {
+      analysis = {
+        extraPaths = {
+          "/Users/sekin/lino_Software/mono/projects/api/lino_api",
+          "/Users/sekin/lino_Software/mono/projects/deploy/lino_deploy",
+          "/Users/sekin/lino_Software/mono/projects/devices/lino_devices",
+          "/Users/sekin/lino_Software/mono/projects/experiments/lino_experiments",
+          "/Users/sekin/lino_Software/mono/projects/lino/lino",
+          "/Users/sekin/lino_Software/mono/projects/postprocess/lino_postprocess"
+        },
+        diagnosticMode = "workspace",
+        useLibraryCodeForTypes = true
+      }
+    }
+  }
+})
+
+
+lspconfig.ts_ls.setup{} -- JavaScript / TypeScript
+lspconfig.clangd.setup{} -- C/C++
+
+
+vim.diagnostic.config({
+  virtual_text = {
+    prefix = "●", -- Use a bullet symbol
+    spacing = 4,
+  },
+  signs = true,
+  underline = true,
+  severity_sort = true,
+})
+
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focusable = false, border = "rounded" })
+  end,
+})
+vim.keymap.set("n", "<C-M>", function()
+  vim.diagnostic.open_float(nil, { focusable = true, border = "rounded" })
+end, { noremap = true, silent = true })
+
+
+-- Auto-completion
+local cmp = require'cmp'
+cmp.setup({
+  mapping = {
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+  }
+})
+
+-- ALE (Linting)
+vim.g.ale_linters = {
+  python = {'flake8', 'pyright'},
+  javascript = {'eslint'},
+  typescript = {'eslint'},
+  cpp = {'clangd'}
+}
+vim.g.ale_fixers = {
+  ['*'] = {'remove_trailing_lines', 'trim_whitespace'},
+  python = {'black'},
+  javascript = {'eslint'},
+  typescript = {'eslint'}
+}
+vim.g.ale_fix_on_save = 1
+
+
+-- Debugging (DAP)
+local dap = require('dap')
+dap.adapters.python = {
+  type = 'executable';
+  command = '/usr/bin/python3';
+  args = { '-m', 'debugpy.adapter' };
+}
+dap.configurations.python = {
+  {
+    type = 'python';
+    request = 'launch';
+    name = "Launch file";
+    program = "${file}";
+  },
+}
+
+-- Telescope (Search)
+local telescope = require('telescope')
+telescope.setup()
+vim.api.nvim_set_keymap("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>fg", "<cmd>Telescope live_grep<cr>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>fh", "<cmd>Telescope help_tags<cr>", { noremap = true })
+
+vim.keymap.set("n", "<leader>fp", function()
+  require("telescope.builtin").find_files({ cwd = vim.fn.getcwd():match("(.*/).-$") }) -- Moves up one directory
+end, { noremap = true, silent = true })
+
+
+vim.env.PYTHONPATH = "/Users/sekin/mono/projects"
