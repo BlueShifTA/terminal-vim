@@ -1,0 +1,4 @@
+/.oh-my-zsh
+/terminal_backup*
+__pycache__/
+/.vim/plugged/
