@@ -2,7 +2,8 @@
 
 set -e
 
-DOTFILES_DIR=~/terminal_editor_settings
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="${1:-$SCRIPT_DIR}"
 cd "$DOTFILES_DIR"
 
 echo "📤 Backing up dotfiles to $DOTFILES_DIR..."
@@ -72,4 +73,3 @@ git commit -m "🔄 Backup: $(date +'%Y-%m-%d %H:%M')"
 # git push
 
 echo "✅ Backup complete."
-

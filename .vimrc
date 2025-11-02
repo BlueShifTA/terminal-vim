@@ -115,6 +115,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'shumphrey/fugitive-gitlab.vim'
 Plug 'puremourning/vimspector'
 
 " AI assistance
@@ -135,6 +137,7 @@ let g:ale_fixers = {
 \   'python': ['remove_trailing_lines', 'trim_whitespace', 'pycln', 'black'],
 \   'javascript': ['prettier', 'eslint'],
 \   'typescriptreact': ['prettier', 'eslint'],
+\   'rust': ['rustfmt'],
 \}
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
@@ -152,7 +155,7 @@ nnoremap <leader>en :ALEEnable<CR>
 nnoremap <leader>di :ALEDisable<CR>
 
 " Coc.nvim ----------------------------------------------------
-let g:coc_global_extensions = ['coc-pyright', 'coc-json', 'coc-tsserver', 'coc-yaml']
+let g:coc_global_extensions = ['coc-pyright', 'coc-json', 'coc-tsserver', 'coc-yaml', 'coc-rust-analyzer']
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
@@ -214,6 +217,21 @@ nmap <Leader>dj <Plug>VimspectorStepOver
 
 " Copilot / AI ------------------------------------------------
 let g:openai_model = 'gpt-4o-mini'
+
+" Fugitive ----------------------------------------------------
+let g:gbrowse_clipboard = 'unnamedplus'
+let g:fugitive_gitlab_domains = ['gitlab.com']
+
+nnoremap <leader>gs :G<CR>
+nnoremap <leader>gb :Git blame<CR>
+nnoremap <leader>gd :Gvdiffsplit<CR>
+nnoremap <leader>gl :0Gclog<CR>
+nnoremap <leader>gh :Gclog %<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gc :G commit<Space>
+nnoremap <leader>gL :GBrowse<CR>
+nnoremap <leader>gY :GBrowse!<CR>
+nnoremap <leader>ga :Git add -u<CR>
 
 " Autocommands ------------------------------------------------
 autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' | execute "normal! g`\"" | endif

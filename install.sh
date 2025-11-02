@@ -2,7 +2,7 @@
 
 set -e
 
-DOTFILES_DIR=~/Project/terminal_editor_settings
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo "🔧 Setting up your terminal environment from $DOTFILES_DIR"
 
@@ -26,13 +26,14 @@ brew install \
   vim \
   neovim \
   node \
-  python@3.10 \
+  python \
   just \
   gdb \
   gnupg \
   ripgrep \
   lazygit \
-  pyright
+  pyright \
+  git-filter-repo
 
 echo "🐍 Ensuring Python tooling (rope for Coc)..."
 if command -v uv >/dev/null 2>&1; then
@@ -145,20 +146,13 @@ fi
 
 echo "🔧 Configuring Git..."
 
-# Automatically set upstream on first push
 git config --global push.autoSetupRemote true
-
-# Use rebase by default when pulling
 git config --global pull.rebase true
-
-# Automatically stash local changes before rebasing
 git config --global rebase.autoStash true
 
 echo "✅ Git is now configured with:"
 echo "  • push.autoSetupRemote = true"
 echo "  • pull.rebase = true"
 echo "  • rebase.autoStash = true"
-
-
 
 echo "✅ Installation complete. Please restart your terminal."
