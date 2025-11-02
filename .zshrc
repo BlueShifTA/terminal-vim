@@ -101,17 +101,9 @@ source $ZSH/oh-my-zsh.sh
 #
 #
 #
-#alias python=/usr/local/bin/python3.10
-#alias pip="python3.10 -m pip"
-alias pylino=/usr/local/bin/python3.8
-alias piplino="python3.8 -m pip"
 alias gitlogG="git log --color --graph --oneline"
 
-alias vi="/usr/local/Cellar/macvim/9.1.0/bin/vi"
-alias vim="/usr/local/Cellar/macvim/9.1.0/bin/vim"
 
-# alias vi="~/.local/bin/vi"
-# alias vim="~/.local/bin/vim"
 
 # Virtual env
 # export WORKON_HOME=$HOME/.virtualenvs
@@ -135,29 +127,44 @@ alias aux="adaux"
 alias sshnv_alpha="ssh nvidia@172.16.1.200"
 alias aux_pra_format="aux pra add-copy-right ; aux pra black ; aux pra pycln; aux pra isort "
 
-alias workmono="source /Users/sekin/lino_Software/mono/.venv/bin/activate"
+alias workmono="source /Users/sekin/Project/mono/.venv/bin/activate"
+alias workcod="source /Users/sekin/Project/mono-codex/.venv/bin/activate"
 alias run_all_servers="workmono ; just run-auth & just run-hub & just run-reader &"
 
+alias cdcodex="cd /Users/sekin/Project/mono-codex"
 
-alias cddec="cd /Users/sekin/lino_Software/mono/projects/devices"
-alias cdlino="cd /Users/sekin/lino_Software/mono/projects/lino"
-alias cdexp="cd /Users/sekin/lino_Software/mono/projects/experiments"
-alias cdapi="cd /Users/sekin/lino_Software/mono/projects/api"
-alias cdpost="cd /Users/sekin/lino_Software/mono/projects/postprocess"
-alias cdfront="cd /Users/sekin/lino_Software/mono/projects/frontend"
-alias cdconfig="cd /Users/sekin/lino_Software/lino-config"
-alias cddep="cd /Users/sekin/lino_Software/mono/projects/deploy"
+alias cddec="cd /Users/sekin/Project/mono/projects/devices"
+alias cdlino="cd /Users/sekin/Project/mono/projects/lino"
+alias cdexp="cd /Users/sekin/Project/mono/projects/experiments"
+alias cdapi="cd /Users/sekin/Project/mono/projects/api"
+alias cdpost="cd /Users/sekin/Project/mono/projects/postprocess"
+alias cdfront="cd /Users/sekin/Project/mono/projects/frontend"
+alias cdconfig="cd /Users/sekin/Project/lino-config"
+alias cddep="cd /Users/sekin/Project/mono/projects/deploy"
 alias cddata="/Users/sekin/lino_data/experiment_test_data"
 
 
-export JAVA_HOME=`/usr/libexec/java_home -v 1.11`
-export PATH=${JAVA_HOME}/bin:$PATH
+
+alias cdcv="/Users/sekin/Project/SideQuest/cv-webpage"
+alias cdpravafin="/Users/sekin/Project/SideQuest/pravafin"
+alias cdlum="/Users/sekin/Project/SideQuest/LumoRobotic"
+
+
+
+
+
+
 export PYTHONDEVMODE=1
 export PATH="/Users/sekin/.local/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/lino_Software/mono/.venv/bin/python3:$HOME/.venv/nvim/bin:$PATH"
-export VIM_PYTHON3="/Users/sekin/lino_Software/mono/.venv/bin/python3"
+export PATH="$HOME/Project/mono/.venv/bin/python3:$HOME/.venv/nvim/bin:$PATH"
+export PATH="/opt/homebrew/bin:$PATH"
+export VIM_PYTHON3="/Users/sekin/Project/mono/.venv/bin/python3"
 
 # Load secret environment variables (API keys, tokens, etc.)
 [ -f "$HOME/.zshrc.secret" ] && source "$HOME/.zshrc.secret"
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
