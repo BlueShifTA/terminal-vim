@@ -1,226 +1,136 @@
-" VIM Editor
-" Configuration file  for VIM
+" ------------------------------------------------------------
+"                   Personal Vim Configuration
+" ------------------------------------------------------------
 
-" => General
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Sets how many lines of history VIM has to remember
+" General -----------------------------------------------------
+set nocompatible
 set history=700
-
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
-
-" Set to auto read when a file is changed from the outside
 set autoread
-
-" With a map leader it's possible to do extra key combinations
-" like <leader>w saves the current file
+set hidden
+set so=7
 let mapleader = ","
 let g:mapleader = ","
+filetype plugin indent on
+syntax on
 
-" Fast saving
-nmap <leader>w :w!<cr>
-" Fast quit
-nmap <leader>q :q<cr>
-" Fast quit and save
-nmap <leader>wq :wq!<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Set 7 lines to the cursor - when moving vertically using j/k
-set so=7
-
-" Turn on the WiLd menu
-set wildmenu
-
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc
-
-"Always show current position
+" UI ----------------------------------------------------------
+set number
 set ruler
-
-" Height of the command bar
 set cmdheight=2
-
-" A buffer becomes hidden when it is abandoned
-set hid
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-set whichwrap+=<,>,h,l
-
-" Ignore case when searching
-"set ignorecase
-
-" When searching try to be smart about cases
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Makes search act like search in modern browsers
-set incsearch
-
-" Don't redraw while executing macros (good performance config)
-set lazyredraw
-
-" For regular expressions turn magic on
-set magic
-
-" Show matching brackets when text indicator is over them
+set laststatus=2
+set splitright
+set wildmenu
+set wildignore=*.o,*.pyc,*.swp,*.class,*.DS_Store
 set showmatch
-" How many tenths of a second to blink when matching brackets
 set mat=2
-
-" No annoying sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
 set tm=500
+set lazyredraw
+set magic
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set number
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
+" Indentation & Formatting ------------------------------------
 set expandtab
-
-" Be smart when using tabs ;)
 set smarttab
-
-" 1 tab == 4 spaces
 set shiftwidth=4
 set tabstop=4
+set ai
+set si
+set wrap
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
 
-" Linebreak on 500 characters
-"set lbr
-"set tw=500
+" Search ------------------------------------------------------
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
 
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
+" Key Mappings ------------------------------------------------
+nnoremap <leader>w :w!<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>wq :wq!<CR>
 
-""""""""""""""""""""""""""""""
-" => Visual mode related
-""""""""""""""""""""""""""""""
-" Visual mode pressing * or # searches for the current selection
-" Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :call VisualSelection('f')<CR>
-vnoremap <silent> # :call VisualSelection('b')<CR>
+nnoremap <silent> <leader><CR> :nohlsearch<CR>
 
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Moving around, tabs, windows and buffers
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
+nnoremap <leader>bd :bdelete<CR>
+nnoremap <leader>ba :bufdo bdelete<CR>
 
-" Move between words with shift arrows 
-map <S-Left> b 
-map <S-Right> e 
+nnoremap <leader>tn :tabnew<CR>
+nnoremap <leader>to :tabonly<CR>
+nnoremap <leader>tc :tabclose<CR>
+nnoremap <leader>tm :tabmove
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+nnoremap <leader>te :tabedit <C-r>=expand('%:p:h')<CR>/
 
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
+nnoremap <leader>cd :cd %:p:h<CR>:pwd<CR>
 
-" Smart way to move between windows
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
+nnoremap <Space> /
+nnoremap <C-Space> ?
 
-" Close the current buffer
-map <leader>bd :Bclose<cr>
+nnoremap j gj
+nnoremap k gk
+nnoremap <S-Left> b
+nnoremap <S-Right> e
 
-" Close all the buffers
-map <leader>ba :1,1000 bd!<cr>
+" Visual selection search helper --------------------------------
+function! VisualSelection(direction) abort
+  let l:save_reg = @"
+  let l:save_type = getregtype('"')
+  normal! gv"vy
+  let l:pattern = escape(@", '\/.*$^~[]')
+  let @/ = l:pattern
+  if a:direction ==# 'b'
+    execute 'normal! ?' . l:pattern . "\<CR>"
+  else
+    execute 'normal! /' . l:pattern . "\<CR>"
+  endif
+  call setreg('"', l:save_reg, l:save_type)
+endfunction
 
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+xnoremap <silent> * :<C-U>call VisualSelection('f')<CR>
+xnoremap <silent> # :<C-U>call VisualSelection('b')<CR>
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-" Specify the behavior when switching between buffers
-try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
-catch
-endtry
-
-
-" Remember info about open buffers on close
-set viminfo^=%
-
-
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-" Always show the status line
-set laststatus=2
-
-
-" Setting always splitright unless state otherwise
-set splitright
-syntax on
-
-
-" Addon
-
-
-
-
-"""""""""""""""""""""""""""""
-"" => Plugin
-"""""""""""""""""""""""""""""
+" Plugin Management -------------------------------------------
 call plug#begin('~/.vim/plugged')
-call plug#begin()
 
+" Linting & formatting
 Plug 'dense-analysis/ale'
+
+" LSP & completion
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+
+" Navigation & fuzzy finding
 Plug 'preservim/nerdtree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Editing helpers
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'mattn/emmet-vim'
-"Plug 'autozimu/LanguageClient-neovim', {
-"    \ 'branch': 'next',
-"    \ 'do': 'bash install.sh'
-"    \ }
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'github/copilot.vim'
-Plug 'edluffy/hologram.nvim'
-Plug 'giusgad/pets.nvim'
-Plug 'MunifTanjim/nui.nvim'
-Plug 'puremourning/vimspector'
 Plug 'tpope/vim-fugitive'
-Plug 'zbirenbaum/copilot.lua'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'CopilotC-Nvim/CopilotChat.nvim', { 'branch': 'canary' }
+Plug 'puremourning/vimspector'
+
+" AI assistance
+Plug 'github/copilot.vim'
 Plug 'madox2/vim-ai'
+
 call plug#end()
 
+if empty(filter(values(g:plugs), 'isdirectory(v:val.dir)'))
+  augroup PlugBootstrap
+    autocmd!
+    autocmd VimEnter * ++once nested PlugInstall --sync | source $MYVIMRC
+  augroup END
+endif
 
-
-
-"""""""""""
-" ALE
-"""""""""""
-
+" ALE ---------------------------------------------------------
 let g:ale_fixers = {
 \   'python': ['remove_trailing_lines', 'trim_whitespace', 'pycln', 'black'],
 \   'javascript': ['prettier', 'eslint'],
@@ -229,66 +139,84 @@ let g:ale_fixers = {
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
 let g:ale_completion_autoimport = 1
-let g:asyncomplete_sources = ['ale']
-let g:asyncomplete_auto_popup = 1
-let g:python3_host_prog = '/Users/sekin/lino_Software/mono/.venv/bin/python'
+if executable('python3')
+  let g:python3_host_prog = exepath('python3')
+endif
 let g:ale_python_pyright_executable = 'pyright-langserver'
 let g:ale_python_pyright_use_global = 1
-" let g:ale_python_pyright_config = '/Users/sekin/lino_Software/mono/projects/pyrightconfig.json'
 let g:ale_python_pyright_use_project_root = 1
 let g:ale_linters = {'python': ['pyright']}
-" set omnifunc=ale#completion#OmniFunc
-inoremap <expr> <ENTER> pumvisible() ? "\<C-y>" : "\<CR>"
 
 nnoremap <leader>l :ALEFix<CR>
-
-"""""""""""
-
-" run code actions
-vmap <leader>ca  <Plug>(coc-codeaction-selected)
-nmap <leader>ca  <Plug>(coc-codeaction-selected)
-
-nnoremap <leader>jd :ALEGoToDefinition<CR>
 nnoremap <leader>en :ALEEnable<CR>
 nnoremap <leader>di :ALEDisable<CR>
 
+" Coc.nvim ----------------------------------------------------
+let g:coc_global_extensions = ['coc-pyright', 'coc-json', 'coc-tsserver', 'coc-yaml']
 
-"
-" Open NERDTree 
-map <leader>nt :NERDTree
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree")
-      \ && b:NERDTree.isTabTree()) | q | endif
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> <leader>jd <Plug>(coc-definition)
 
-" Vim Spector
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> <leader>jt <Plug>(coc-type-definition)
+
+nnoremap <silent> gi <Plug>(coc-implementation)
+nnoremap <silent> <leader>ji <Plug>(coc-implementation)
+
+nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> <leader>jr <Plug>(coc-references)
+
+nnoremap <leader>rn <Plug>(coc-rename)
+nnoremap <leader>ca <Plug>(coc-codeaction-selected)
+xnoremap <leader>ca <Plug>(coc-codeaction-selected)
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" FZF helpers -------------------------------------------------
+function! s:project_root() abort
+  let l:root = finddir('.git', '.;')
+  return empty(l:root) ? getcwd() : fnamemodify(l:root, ':h')
+endfunction
+
+function! s:rg(scope, args) abort
+  let l:dir = a:scope ==# 'root' ? s:project_root() : getcwd()
+  let l:query = empty(a:args) ? "''" : shellescape(a:args)
+  let l:cmd = 'rg --hidden --glob "!.git" --glob "!.cache" --glob "!*.min.js" --glob "!dist" --glob "!build" --glob "!node_modules" --column --line-number --no-heading --color=always '
+  call fzf#vim#grep(l:cmd . l:query, 1, {'dir': l:dir})
+endfunction
+
+command! -nargs=* Rg call s:rg('cwd', <q-args>)
+command! -nargs=* RgRoot call s:rg('root', <q-args>)
+command! FilesRoot execute 'Files ' . fnameescape(s:project_root())
+
+nnoremap <leader>sf :Files<CR>
+nnoremap <leader>sF :FilesRoot<CR>
+nnoremap <leader>sg :Rg<Space>
+nnoremap <leader>sG :RgRoot<Space>
+
+" NERDTree ----------------------------------------------------
+nnoremap <leader>nt :NERDTreeToggle<CR>
+autocmd VimEnter * if !argc() | NERDTree | wincmd p | endif
+autocmd BufEnter * if winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() | quit | endif
+
+" Vimspector --------------------------------------------------
 let g:vimspector_enable_mappings = 'HUMAN'
-syntax enable
-filetype plugin indent on
-
 nnoremap <Leader>dd :call vimspector#Launch()<CR>
 nnoremap <Leader>de :call vimspector#Reset()<CR>
 nnoremap <Leader>dc :call vimspector#Continue()<CR>
-
 nnoremap <Leader>dt :call vimspector#ToggleBreakpoint()<CR>
 nnoremap <Leader>dT :call vimspector#ClearBreakpoints()<CR>
-
 nmap <Leader>dk <Plug>VimspectorRestart
 nmap <Leader>dh <Plug>VimspectorStepOut
 nmap <Leader>dl <Plug>VimspectorStepInto
 nmap <Leader>dj <Plug>VimspectorStepOver
 
+" Copilot / AI ------------------------------------------------
+let g:openai_model = 'gpt-4o-mini'
 
+" Autocommands ------------------------------------------------
+autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit' | execute "normal! g`\"" | endif
 
-" Vim AI
-let g:openai_model = "gpt-4o-mini"
-
-
-
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-      \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-      \ |   exe "normal! g`\""
-      \ | endif
+" Buffer persistence
+set viminfo^=%

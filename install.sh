@@ -34,6 +34,21 @@ brew install \
   lazygit \
   pyright
 
+echo "🐍 Ensuring Python tooling (rope for Coc)..."
+if command -v uv >/dev/null 2>&1; then
+  echo "   using uv to install rope"
+  uv pip install --upgrade rope
+else
+  PYTHON_HOST="$(command -v python3 || command -v python || true)"
+  if [ -n "$PYTHON_HOST" ]; then
+    echo "   using python at $PYTHON_HOST"
+    "$PYTHON_HOST" -m pip install --upgrade pip >/dev/null 2>&1 || true
+    "$PYTHON_HOST" -m pip install --upgrade rope
+  else
+    echo "⚠️  No python interpreter found on PATH; skipping rope install"
+  fi
+fi
+
 brew install --cask iterm2
 
 # -------------------------------
