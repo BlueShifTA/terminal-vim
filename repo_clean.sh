@@ -16,7 +16,7 @@ BFG_ARGS=(
   "--delete-files" "ssh_keys.tar.gz.gpg"
 )
 
-bfg "${BFG_ARGS[@]}" "$SCRIPT_DIR"
+bfg "${BFG_ARGS[@]}" "$SCRIPT_DIR" .
 
 echo "🗑️  Expiring reflog and pruning old objects..."
 git reflog expire --expire=now --all
