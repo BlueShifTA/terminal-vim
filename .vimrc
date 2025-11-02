@@ -137,7 +137,6 @@ let g:ale_fixers = {
 \   'python': ['remove_trailing_lines', 'trim_whitespace', 'pycln', 'black'],
 \   'javascript': ['prettier', 'eslint'],
 \   'typescriptreact': ['prettier', 'eslint'],
-\   'rust': ['rustfmt'],
 \}
 let g:ale_completion_enabled = 0
 let g:ale_fix_on_save = 1
@@ -155,7 +154,7 @@ nnoremap <leader>en :ALEEnable<CR>
 nnoremap <leader>di :ALEDisable<CR>
 
 " Coc.nvim ----------------------------------------------------
-let g:coc_global_extensions = ['coc-pyright', 'coc-json', 'coc-tsserver', 'coc-yaml', 'coc-rust-analyzer']
+let g:coc_global_extensions = ['coc-pyright', 'coc-json', 'coc-tsserver', 'coc-yaml']
 
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
@@ -164,9 +163,6 @@ nnoremap <silent> <leader>jd <Plug>(coc-definition)
 
 nnoremap <silent> gy <Plug>(coc-type-definition)
 nnoremap <silent> <leader>jt <Plug>(coc-type-definition)
-
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> <leader>ji <Plug>(coc-implementation)
 
 nnoremap <silent> gr <Plug>(coc-references)
 nnoremap <silent> <leader>jr <Plug>(coc-references)

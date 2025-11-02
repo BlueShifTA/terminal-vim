@@ -32,8 +32,7 @@ brew install \
   gnupg \
   ripgrep \
   lazygit \
-  pyright \
-  git-filter-repo
+  pyright
 
 echo "🐍 Ensuring Python tooling (rope for Coc)..."
 if command -v uv >/dev/null 2>&1; then

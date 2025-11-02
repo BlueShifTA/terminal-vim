@@ -9,7 +9,6 @@
 | `,sg` | Ripgrep search in the current directory using FZF. |
 | `,sG` | Ripgrep search from the project root. |
 | `,jt` | Jump to type definition. |
-| `,ji` | Jump to implementation (when the language server supports it). |
 | `,jr` | List references for the symbol under the cursor. |
 | `,ca` | Trigger Coc code actions for quick fixes/refactors. |
 | `,gs` | Open Fugitive status window for Git operations. |
@@ -27,7 +26,7 @@
 - Unified keybinding scheme built around the comma leader and mnemonic prefixes (`j` for jumps, `s` for search, `g` for Git).
 - Project-aware search commands using ripgrep and FZF for both current directory and Git root scopes.
 - Git workflows directly from Vim, including blame, history, GBrowse links, and quick staging/committing.
-- Python (Pyright) and Rust (rust-analyzer) LSP support ready to go; ALE handles formatting with Black/pycln/rustfmt and Prettier/ESLint for JS/TS.
+- Python LSP support (Pyright) ready to go; ALE handles formatting with Black/pycln and Prettier/ESLint for JS/TS.
 
 ## Quick Start
 1. **Clone** this repository wherever you store your dotfiles, e.g.
@@ -42,13 +41,9 @@
 3. **Open Vim** once to let vim-plug sync plugins (only runs automatically if they are missing). If you add new plugins later, run `:PlugInstall` manually.
 4. **Install Coc extensions** as needed (they will auto-install on first launch, but you can re-run):
    ```vim
-   :CocInstall coc-pyright coc-json coc-tsserver coc-yaml coc-rust-analyzer
+   :CocInstall coc-pyright coc-json coc-tsserver coc-yaml
    ```
-5. **Confirm rust tooling** (if you write Rust):
-   ```bash
-   rustup component add rustfmt rust-analyzer
-   ```
-6. **Clean up secrets artifacts** (after restoring them to `~/.zshrc.secret` / `~/.ssh`):
+5. **Clean up secrets artifacts** (after restoring them to `~/.zshrc.secret` / `~/.ssh`):
    ```bash
    ./cleanup.sh
    ```
@@ -66,13 +61,13 @@
 - Leader is set to comma (`let mapleader = ','`).
 - Visual selections `*`/`#` reuse `VisualSelection()` to search forward/backward.
 - The FZF commands automatically ignore typical build artifacts (`dist`, `build`, `node_modules`, `.cache`, miniﬁed files).
-- `install.sh` uses `uv` (if available) to install Python dependencies like `rope` and grabs `rust-analyzer` tooling via rustup.
+- `install.sh` uses `uv` (if available) to install Python dependencies like `rope`.
 - GBrowse requires your Git remote to be HTTPS/SSH pointing to GitHub or GitLab; the GitLab handler is preconfigured for `gitlab.com`.
 
 ## Secrets Workflow
 - `backup.sh` encrypts `~/.zshrc.secret` and your selected SSH keys using AES-256 symmetric GPG. You choose the passphrase when prompted; it isn’t stored anywhere, so remember it.
 - `install.sh` detects those `.gpg` files and decrypts them back into place, prompting for the same passphrase during setup.
-- Run `cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). To wipe them from Git history and any remotes, the script reminds you to run:
+- Run `cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). To wipe them from Git history and any remotes, run:
   ```bash
   bfg --delete-files .zshrc.secret.gpg --delete-files ssh_keys.tar.gz.gpg
   git reflog expire --expire=now --all && git gc --prune=now --aggressive
