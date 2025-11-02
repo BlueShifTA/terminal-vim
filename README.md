@@ -47,6 +47,10 @@
    ```bash
    ./cleanup.sh
    ```
+7. **Rewrite history to drop encrypted files**:
+   ```bash
+   ./repo_clean.sh
+   ```
 
 ## Key Plugins Included
 - **dense-analysis/ale** – linting/formatting on save.
@@ -67,12 +71,6 @@
 ## Secrets Workflow
 - `backup.sh` encrypts `~/.zshrc.secret` and your selected SSH keys using AES-256 symmetric GPG. You choose the passphrase when prompted; it isn’t stored anywhere, so remember it.
 - `install.sh` detects those `.gpg` files and decrypts them back into place, prompting for the same passphrase during setup.
-- Run `cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). To wipe them from Git history and any remotes, run:
-  ```bash
-  bfg --delete-files .zshrc.secret.gpg --delete-files ssh_keys.tar.gz.gpg
-  git reflog expire --expire=now --all && git gc --prune=now --aggressive
-  git push --force
-  ```
-  so the secrets disappear everywhere.
+- Run `cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). Follow up with `./repo_clean.sh` to scrub them from Git history and force-push the rewritten history so the secrets disappear everywhere.
 
 Feel free to tailor mappings or plugin lists to your workflow—this repository is meant to be a starting point that captures the core everyday motions listed in the table above.

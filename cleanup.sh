@@ -33,7 +33,4 @@ for file in "${SENSITIVE_FILES[@]}"; do
 done
 
 echo "ℹ️  Sensitive archives removed from working tree."
-echo "⚠️  To purge them from Git history and the remote, run:"
-echo "   bfg --delete-files .zshrc.secret.gpg --delete-files ssh_keys.tar.gz.gpg"
-echo "   git reflog expire --expire=now --all && git gc --prune=now --aggressive"
-echo "   git push --force"
+echo "⚠️  Run ./repo_clean.sh to purge them from Git history and update the remote."
