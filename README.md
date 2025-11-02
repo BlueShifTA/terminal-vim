@@ -36,7 +36,7 @@
 2. **Bootstrap a new Mac** (Homebrew, shells, Vim configs, plugins, tooling):
    ```bash
    cd ~/terminal-vim
-   ./install.sh
+   ./scripts/install.sh
    ```
 3. **Open Vim** once to let vim-plug sync plugins (only runs automatically if they are missing). If you add new plugins later, run `:PlugInstall` manually.
 4. **Install Coc extensions** as needed (they will auto-install on first launch, but you can re-run):
@@ -45,11 +45,11 @@
    ```
 5. **Clean up secrets artifacts** (after restoring them to `~/.zshrc.secret` / `~/.ssh`):
    ```bash
-   ./cleanup.sh
+   ./scripts/cleanup.sh
    ```
-7. **Rewrite history to drop encrypted files**:
+6. **Rewrite history to drop encrypted files**:
    ```bash
-   ./repo_clean.sh
+   ./scripts/repo_clean.sh
    ```
 
 ## Key Plugins Included
@@ -69,8 +69,17 @@
 - GBrowse requires your Git remote to be HTTPS/SSH pointing to GitHub or GitLab; the GitLab handler is preconfigured for `gitlab.com`.
 
 ## Secrets Workflow
-- `backup.sh` encrypts `~/.zshrc.secret` and your selected SSH keys using AES-256 symmetric GPG. You choose the passphrase when prompted; it isn’t stored anywhere, so remember it.
-- `install.sh` detects those `.gpg` files and decrypts them back into place, prompting for the same passphrase during setup.
-- Run `cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). Follow up with `./repo_clean.sh` to scrub them from Git history and force-push the rewritten history so the secrets disappear everywhere.
+- `scripts/backup.sh` encrypts `~/.zshrc.secret` and your selected SSH keys using AES-256 symmetric GPG. You choose the passphrase when prompted; it isn’t stored anywhere, so remember it.
+- `scripts/install.sh` detects those `.gpg` files and decrypts them back into place, prompting for the same passphrase during setup.
+- Run `scripts/cleanup.sh` after you’ve restored secrets to remove the encrypted archives from the repository working tree (and unstage them if they were tracked). Follow up with `./scripts/repo_clean.sh` to scrub them from Git history and force-push the rewritten history so the secrets disappear everywhere.
+
+## Minimal Vim Config
+Need something portable for any machine? Use the provided `.vimrc_small`:
+
+```bash
+cp .vimrc_small ~/.vimrc
+```
+
+It installs only the essentials—`coc.nvim` for go-to-definition, `fzf.vim` for file search, and `nerdtree` for navigation—while keeping the rest of the setup lightweight. Run `:PlugInstall` the first time to fetch the plugins. All key bindings mirror the defaults described above (``,jd`` for definition, `,sf`/`,sg` for search, `,nt` for NERDTree toggle).
 
 Feel free to tailor mappings or plugin lists to your workflow—this repository is meant to be a starting point that captures the core everyday motions listed in the table above.

@@ -3,7 +3,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
 
 if ! command -v bfg >/dev/null 2>&1; then
   echo "❌ BFG Repo-Cleaner is not installed (try 'brew install bfg')."
@@ -16,7 +17,7 @@ BFG_ARGS=(
   "--delete-files" "ssh_keys.tar.gz.gpg"
 )
 
-bfg "${BFG_ARGS[@]}" "$SCRIPT_DIR" .
+bfg "${BFG_ARGS[@]}" "$REPO_ROOT"
 
 echo "🗑️  Expiring reflog and pruning old objects..."
 git reflog expire --expire=now --all

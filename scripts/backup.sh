@@ -3,7 +3,8 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DOTFILES_DIR="${1:-$SCRIPT_DIR}"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+DOTFILES_DIR="${1:-$REPO_ROOT}"
 cd "$DOTFILES_DIR"
 
 echo "📤 Backing up dotfiles to $DOTFILES_DIR..."

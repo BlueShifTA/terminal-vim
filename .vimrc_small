@@ -1,0 +1,64 @@
+" Minimal Vim configuration for portable setups
+
+let mapleader = ","
+filetype plugin indent on
+syntax on
+set nocompatible
+set number
+set hidden
+set termguicolors
+set updatetime=300
+set signcolumn=yes
+
+" Basic indentation and search
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartcase
+set ignorecase
+set incsearch
+
+" Use system clipboard when available
+if has('clipboard')
+  set clipboard+=unnamedplus
+endif
+
+" Bootstrap vim-plug if missing
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'preservim/nerdtree'
+call plug#end()
+
+" Coc mappings
+nmap <silent> gd <Plug>(coc-definition)
+nmap <leader>jd <Plug>(coc-definition)
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>ca <Plug>(coc-codeaction)
+
+" FZF mappings
+nnoremap <leader>sf :Files<CR>
+nnoremap <leader>sg :Rg<Space>
+
+" NERDTree toggle
+nnoremap <leader>nt :NERDTreeToggle<CR>
+autocmd VimEnter * if !argc() | NERDTree | wincmd p | endif
+
+" Quality-of-life
+nnoremap <leader>w :w<CR>
+nnoremap <leader>q :q<CR>
+
+" Highlight symbol under cursor
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Use ripgrep for :Rg fallback
+if !exists(':Rg')
+  command! -nargs=* Rg call fzf#vim#grep('rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1)
+endif
